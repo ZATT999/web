@@ -3,7 +3,7 @@
 export default function HomePage() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-900 via-blue-800 to-purple-900 flex items-center justify-center p-4">
-       <h1>Proximamente torneo de clash royale en el CTE</h1>
+       <h1>🏆 Proximamente torneo de Clash Royale en el CTE</h1>
       
       {/* <div className="text-center space-y-6">
         <h1 className="text-4xl md:text-6xl font-bold text-white mb-4">🏆 Clash Royale Tournament</h1>
