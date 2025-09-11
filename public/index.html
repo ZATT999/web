@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Torneo Clash Royale - Clasificación</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;900&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --background: #F0F4FF;
+            --foreground: #0A74DA;
+            --card: rgba(255, 255, 255, 0.3);
+            --card-foreground: #0A74DA;
+            --primary: #0A74DA;
+            --primary-foreground: #FFFFFF;
+            --secondary: #C1D3E3;
+            --accent: #FFD700;
+            --accent-foreground: #FFFFFF;
+            --border: #C1D3E3;
+            --muted-foreground: #4B5563;
+        }
+        
+        body {
+            font-family: 'Open Sans', sans-serif;
+            background: linear-gradient(135deg, #0A74DA 0%, #1E40AF 50%, #3B82F6 100%);
+            min-height: 100vh;
+        }
+        
+        .title-font {
+            font-family: 'Montserrat', sans-serif;
+        }
+        
+        .glass {
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .glass-card {
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            background: rgba(255, 255, 255, 0.15);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary) 0%, #1E40AF 100%);
+            color: var(--primary-foreground);
+            transition: all 0.3s ease;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(10, 116, 218, 0.3);
+        }
+        
+        .btn-accent {
+            background: linear-gradient(135deg, var(--accent) 0%, #F59E0B 100%);
+            color: var(--accent-foreground);
+            transition: all 0.3s ease;
+        }
+        
+        .btn-accent:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(255, 215, 0, 0.3);
+        }
+        
+        .crown-icon {
+            color: var(--accent);
+            filter: drop-shadow(0 2px 4px rgba(255, 215, 0, 0.3));
+        }
+        
+        .rank-badge {
+            background: linear-gradient(135deg, var(--accent) 0%, #F59E0B 100%);
+            color: var(--accent-foreground);
+            font-weight: 900;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+        }
+        
+        .loading {
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+        
+        .win-indicator {
+            color: #10B981;
+            font-weight: 600;
+        }
+        
+        .loss-indicator {
+            color: #EF4444;
+            font-weight: 600;
+        }
+        
+        .table-header {
+            background: linear-gradient(135deg, rgba(10, 116, 218, 0.8) 0%, rgba(30, 64, 175, 0.8) 100%);
+            color: white;
+            font-weight: 700;
+        }
+        
+        .table-row:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: scale(1.01);
+            transition: all 0.2s ease;
+        }
+    </style>
+</head>
+<body>
+    <div class="min-h-screen p-4">
+        <!-- Header -->
+        <div class="text-center mb-8">
+            <div class="glass-card rounded-2xl p-8 max-w-4xl mx-auto">
+                <h1 class="title-font text-4xl md:text-6xl font-black text-white mb-4">
+                    🏆 TORNEO CLASH ROYALE
+                </h1>
+                <p class="text-xl text-white/90 font-semibold">
+                    Clasificación Oficial del Torneo
+                </p>
+                <div class="flex flex-wrap justify-center gap-4 mt-6">
+                    <button onclick="refreshData()" class="btn-primary px-6 py-3 rounded-xl font-semibold flex items-center gap-2">
+                        <span>🔄</span> Actualizar
+                    </button>
+                    <button onclick="downloadCSV()" class="btn-accent px-6 py-3 rounded-xl font-semibold flex items-center gap-2">
+                        <span>📥</span> Descargar CSV
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Leaderboard Table -->
+        <div class="max-w-7xl mx-auto">
+            <div class="glass-card rounded-2xl overflow-hidden">
+                <div class="overflow-x-auto">
+                    <table class="w-full">
+                        <thead class="table-header">
+                            <tr>
+                                <th class="px-4 py-4 text-left">Pos</th>
+                                <th class="px-4 py-4 text-left">Jugador</th>
+                                <th class="px-4 py-4 text-center">Megaselección</th>
+                                <th class="px-4 py-4 text-center">Elixir x3</th>
+                                <th class="px-4 py-4 text-center">Batalla Clásica</th>
+                                <th class="px-4 py-4 text-center">Victorias</th>
+                                <th class="px-4 py-4 text-center">Derrotas</th>
+                                <th class="px-4 py-4 text-center">Coronas</th>
+                                <th class="px-4 py-4 text-center">Puntos</th>
+                            </tr>
+                        </thead>
+                        <tbody id="leaderboard-body" class="text-white">
+                            <!-- Loading state -->
+                            <tr class="loading">
+                                <td colspan="9" class="text-center py-8">
+                                    <div class="text-xl">Cargando clasificación...</div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="text-center mt-8">
+            <div class="glass rounded-xl p-4 max-w-2xl mx-auto">
+                <p class="text-white/80 text-sm">
+                    Sistema de puntuación: 3 puntos por victoria + 1 punto por corona
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const API_BASE_URL = 'http://localhost:3001/api';
+        let playersData = [];
+
+        // Load data on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            loadLeaderboard();
+        });
+
+        async function loadLeaderboard() {
+            try {
+                const response = await fetch(`${API_BASE_URL}/scores`);
+                if (!response.ok) {
+                    throw new Error('Error al cargar los datos');
+                }
+                
+                playersData = await response.json();
+                renderLeaderboard();
+            } catch (error) {
+                console.error('Error:', error);
+                document.getElementById('leaderboard-body').innerHTML = `
+                    <tr>
+                        <td colspan="9" class="text-center py-8 text-red-300">
+                            Error al cargar los datos. Asegúrate de que el servidor esté ejecutándose.
+                        </td>
+                    </tr>
+                `;
+            }
+        }
+
+        function renderLeaderboard() {
+            const tbody = document.getElementById('leaderboard-body');
+            
+            if (playersData.length === 0) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="9" class="text-center py-8 text-white/70">
+                            No hay jugadores registrados
+                        </td>
+                    </tr>
+                `;
+                return;
+            }
+
+            tbody.innerHTML = playersData.map((player, index) => {
+                const position = index + 1;
+                const rankBadge = position <= 3 ? 
+                    `<span class="rank-badge px-3 py-1 rounded-full text-sm">${position}</span>` :
+                    `<span class="text-white font-bold text-lg">${position}</span>`;
+
+                return `
+                    <tr class="table-row border-b border-white/10">
+                        <td class="px-4 py-4">${rankBadge}</td>
+                        <td class="px-4 py-4">
+                            <div class="font-semibold text-lg">${player.name}</div>
+                        </td>
+                        <td class="px-4 py-4 text-center">
+                            <div class="flex flex-col items-center gap-1">
+                                <span class="${player.megaSelection.win ? 'win-indicator' : 'loss-indicator'}">
+                                    ${player.megaSelection.win ? '✅ Victoria' : '❌ Derrota'}
+                                </span>
+                                <span class="crown-icon text-sm">👑 ${player.megaSelection.crowns}</span>
+                            </div>
+                        </td>
+                        <td class="px-4 py-4 text-center">
+                            <div class="flex flex-col items-center gap-1">
+                                <span class="${player.elixirX3.win ? 'win-indicator' : 'loss-indicator'}">
+                                    ${player.elixirX3.win ? '✅ Victoria' : '❌ Derrota'}
+                                </span>
+                                <span class="crown-icon text-sm">👑 ${player.elixirX3.crowns}</span>
+                            </div>
+                        </td>
+                        <td class="px-4 py-4 text-center">
+                            <div class="flex flex-col items-center gap-1">
+                                <span class="${player.classicDeck.win ? 'win-indicator' : 'loss-indicator'}">
+                                    ${player.classicDeck.win ? '✅ Victoria' : '❌ Derrota'}
+                                </span>
+                                <span class="crown-icon text-sm">👑 ${player.classicDeck.crowns}</span>
+                            </div>
+                        </td>
+                        <td class="px-4 py-4 text-center">
+                            <span class="win-indicator text-lg font-bold">${player.wins}</span>
+                        </td>
+                        <td class="px-4 py-4 text-center">
+                            <span class="loss-indicator text-lg font-bold">${player.losses}</span>
+                        </td>
+                        <td class="px-4 py-4 text-center">
+                            <span class="crown-icon text-lg font-bold">${player.totalCrowns}</span>
+                        </td>
+                        <td class="px-4 py-4 text-center">
+                            <span class="text-yellow-300 text-xl font-black">${player.points}</span>
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        async function refreshData() {
+            const button = event.target.closest('button');
+            const originalText = button.innerHTML;
+            button.innerHTML = '<span>🔄</span> Actualizando...';
+            button.disabled = true;
+            
+            await loadLeaderboard();
+            
+            setTimeout(() => {
+                button.innerHTML = originalText;
+                button.disabled = false;
+            }, 1000);
+        }
+
+        function downloadCSV() {
+            if (playersData.length === 0) {
+                alert('No hay datos para descargar');
+                return;
+            }
+
+            const headers = [
+                'Posición',
+                'Jugador',
+                'Megaselección (Victoria)',
+                'Megaselección (Coronas)',
+                'Elixir x3 (Victoria)',
+                'Elixir x3 (Coronas)',
+                'Batalla Clásica (Victoria)',
+                'Batalla Clásica (Coronas)',
+                'Victorias',
+                'Derrotas',
+                'Total Coronas',
+                'Puntos'
+            ];
+
+            const csvContent = [
+                headers.join(','),
+                ...playersData.map((player, index) => [
+                    index + 1,
+                    `"${player.name}"`,
+                    player.megaSelection.win ? 'Sí' : 'No',
+                    player.megaSelection.crowns,
+                    player.elixirX3.win ? 'Sí' : 'No',
+                    player.elixirX3.crowns,
+                    player.classicDeck.win ? 'Sí' : 'No',
+                    player.classicDeck.crowns,
+                    player.wins,
+                    player.losses,
+                    player.totalCrowns,
+                    player.points
+                ].join(','))
+            ].join('\n');
+
+            const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+            const link = document.createElement('a');
+            const url = URL.createObjectURL(blob);
+            link.setAttribute('href', url);
+            link.setAttribute('download', `clasificacion-clash-royale-${new Date().toISOString().split('T')[0]}.csv`);
+            link.style.visibility = 'hidden';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+    </script>
+</body>
+</html>

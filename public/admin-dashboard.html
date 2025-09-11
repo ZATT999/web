@@ -1,0 +1,754 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dashboard Admin - Torneo Clash Royale</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;900&family=Open+Sans:wght@400;600&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --background: #f0f4ff;
+        --foreground: #0a74da;
+        --card: rgba(255, 255, 255, 0.3);
+        --card-foreground: #0a74da;
+        --primary: #0a74da;
+        --primary-foreground: #ffffff;
+        --secondary: #c1d3e3;
+        --accent: #ffd700;
+        --accent-foreground: #ffffff;
+        --border: #c1d3e3;
+        --muted-foreground: #4b5563;
+        --success: #10b981;
+        --danger: #ef4444;
+      }
+
+      body {
+        font-family: "Open Sans", sans-serif;
+        background: linear-gradient(
+          135deg,
+          #0a74da 0%,
+          #1e40af 50%,
+          #3b82f6 100%
+        );
+        min-height: 100vh;
+      }
+
+      .title-font {
+        font-family: "Montserrat", sans-serif;
+      }
+
+      .glass {
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        background: rgba(255, 255, 255, 0.1);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+      }
+
+      .glass-card {
+        backdrop-filter: blur(15px);
+        -webkit-backdrop-filter: blur(15px);
+        background: rgba(255, 255, 255, 0.15);
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+      }
+
+      .btn-primary {
+        background: linear-gradient(135deg, var(--primary) 0%, #1e40af 100%);
+        color: var(--primary-foreground);
+        transition: all 0.3s ease;
+      }
+
+      .btn-primary:hover:not(:disabled) {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 25px rgba(10, 116, 218, 0.3);
+      }
+
+      .btn-accent {
+        background: linear-gradient(135deg, var(--accent) 0%, #f59e0b 100%);
+        color: var(--accent-foreground);
+        transition: all 0.3s ease;
+      }
+
+      .btn-accent:hover:not(:disabled) {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 25px rgba(255, 215, 0, 0.3);
+      }
+
+      .btn-success {
+        background: linear-gradient(135deg, var(--success) 0%, #059669 100%);
+        color: white;
+        transition: all 0.3s ease;
+      }
+
+      .btn-success:hover:not(:disabled) {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 25px rgba(16, 185, 129, 0.3);
+      }
+
+      .btn-danger {
+        background: linear-gradient(135deg, var(--danger) 0%, #dc2626 100%);
+        color: white;
+        transition: all 0.3s ease;
+      }
+
+      .btn-danger:hover:not(:disabled) {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 25px rgba(239, 68, 68, 0.3);
+      }
+
+      .btn-secondary {
+        background: rgba(255, 255, 255, 0.2);
+        color: white;
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        transition: all 0.3s ease;
+      }
+
+      .btn-secondary:hover:not(:disabled) {
+        background: rgba(255, 255, 255, 0.3);
+        transform: translateY(-1px);
+      }
+
+      .input-field {
+        background: rgba(255, 255, 255, 0.9);
+        border: 2px solid rgba(255, 255, 255, 0.3);
+        color: var(--foreground);
+        transition: all 0.3s ease;
+      }
+
+      .input-field:focus {
+        outline: none;
+        border-color: var(--accent);
+        box-shadow: 0 0 0 3px rgba(255, 215, 0, 0.2);
+        background: rgba(255, 255, 255, 0.95);
+      }
+
+      .select-field {
+        background: rgba(255, 255, 255, 0.9);
+        border: 2px solid rgba(255, 255, 255, 0.3);
+        color: var(--foreground);
+      }
+
+      .table-header {
+        background: linear-gradient(
+          135deg,
+          rgba(10, 116, 218, 0.8) 0%,
+          rgba(30, 64, 175, 0.8) 100%
+        );
+        color: white;
+        font-weight: 700;
+      }
+
+      .table-row:hover {
+        background: rgba(255, 255, 255, 0.1);
+        transform: scale(1.01);
+        transition: all 0.2s ease;
+      }
+
+      .modal {
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+      }
+
+      .loading {
+        animation: pulse 2s infinite;
+      }
+
+      @keyframes pulse {
+        0%,
+        100% {
+          opacity: 1;
+        }
+        50% {
+          opacity: 0.5;
+        }
+      }
+
+      .crown-icon {
+        color: var(--accent);
+        filter: drop-shadow(0 2px 4px rgba(255, 215, 0, 0.3));
+      }
+
+      .rank-badge {
+        background: linear-gradient(135deg, var(--accent) 0%, #f59e0b 100%);
+        color: var(--accent-foreground);
+        font-weight: 900;
+        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+      }
+
+      .win-indicator {
+        color: #10b981;
+        font-weight: 600;
+      }
+
+      .loss-indicator {
+        color: #ef4444;
+        font-weight: 600;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="min-h-screen p-4">
+      <!-- Header -->
+      <div class="text-center mb-8">
+        <div class="glass-card rounded-2xl p-6 max-w-6xl mx-auto">
+          <div
+            class="flex flex-col md:flex-row items-center justify-between gap-4"
+          >
+            <div>
+              <h1
+                class="title-font text-3xl md:text-5xl font-black text-white mb-2"
+              >
+                🛡️ PANEL ADMINISTRADOR
+              </h1>
+              <p class="text-xl text-white/90 font-semibold">
+                Gestión del Torneo Clash Royale
+              </p>
+            </div>
+            <div class="flex flex-wrap gap-3">
+              <button
+                onclick="showAddPlayerModal()"
+                class="btn-success px-4 py-2 rounded-xl font-semibold flex items-center gap-2"
+              >
+                <span>➕</span> Agregar Jugador
+              </button>
+              <button
+                onclick="refreshData()"
+                class="btn-primary px-4 py-2 rounded-xl font-semibold flex items-center gap-2"
+              >
+                <span>🔄</span> Actualizar
+              </button>
+              <button
+                onclick="logout()"
+                class="btn-danger px-4 py-2 rounded-xl font-semibold flex items-center gap-2"
+              >
+                <span>🚪</span> Cerrar Sesión
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Admin Table -->
+      <div class="max-w-7xl mx-auto">
+        <div class="glass-card rounded-2xl overflow-hidden">
+          <div class="overflow-x-auto">
+            <table class="w-full">
+              <thead class="table-header">
+                <tr>
+                  <th class="px-4 py-4 text-left">Pos</th>
+                  <th class="px-4 py-4 text-left">Jugador</th>
+                  <th class="px-4 py-4 text-center">Megaselección</th>
+                  <th class="px-4 py-4 text-center">Elixir x3</th>
+                  <th class="px-4 py-4 text-center">Batalla Clásica</th>
+                  <th class="px-4 py-4 text-center">Victorias</th>
+                  <th class="px-4 py-4 text-center">Derrotas</th>
+                  <th class="px-4 py-4 text-center">Coronas</th>
+                  <th class="px-4 py-4 text-center">Puntos</th>
+                  <th class="px-4 py-4 text-center">Acciones</th>
+                </tr>
+              </thead>
+              <tbody id="admin-table-body" class="text-white">
+                <tr class="loading">
+                  <td colspan="10" class="text-center py-8">
+                    <div class="text-xl">Cargando datos...</div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- Status Messages -->
+      <div id="statusMessage" class="fixed top-4 right-4 z-50 hidden"></div>
+    </div>
+
+    <!-- Add Player Modal -->
+    <div
+      id="addPlayerModal"
+      class="fixed inset-0 bg-black/50 modal flex items-center justify-center p-4 z-50"
+    >
+      <div class="glass-card rounded-2xl p-6 w-full max-w-md">
+        <h3 class="title-font text-2xl font-bold text-white mb-4">
+          ➕ Agregar Nuevo Jugador
+        </h3>
+        <form id="addPlayerForm">
+          <div class="mb-4">
+            <label class="block text-white font-semibold mb-2"
+              >Nombre del Jugador</label
+            >
+            <input
+              type="text"
+              id="newPlayerName"
+              class="input-field w-full px-4 py-3 rounded-xl"
+              placeholder="Ingresa el nombre..."
+              required
+            />
+          </div>
+          <div class="flex gap-3">
+            <button
+              type="submit"
+              class="btn-success flex-1 px-4 py-3 rounded-xl font-semibold"
+            >
+              Agregar
+            </button>
+            <button
+              type="button"
+              onclick="hideAddPlayerModal()"
+              class="btn-secondary flex-1 px-4 py-3 rounded-xl font-semibold"
+            >
+              Cancelar
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Edit Player Modal -->
+    <div
+      id="editPlayerModal"
+      class="fixed inset-0 bg-black/50 modal flex items-center justify-center p-4 z-50"
+    >
+      <div class="glass-card rounded-2xl p-6 w-full max-w-2xl">
+        <h3 class="title-font text-2xl font-bold text-white mb-4">
+          ✏️ Editar Resultados
+        </h3>
+        <form id="editPlayerForm">
+          <input type="hidden" id="editPlayerId" />
+          <div class="mb-4">
+            <label class="block text-white font-semibold mb-2">Jugador</label>
+            <input
+              type="text"
+              id="editPlayerName"
+              class="input-field w-full px-4 py-3 rounded-xl"
+              readonly
+            />
+          </div>
+
+          <div class="grid md:grid-cols-3 gap-4 mb-6">
+            <!-- Megaselección -->
+            <div class="glass rounded-xl p-4">
+              <h4 class="text-white font-bold mb-3">🏆 Megaselección</h4>
+              <div class="space-y-2">
+                <select
+                  id="megaWin"
+                  class="select-field w-full px-3 py-2 rounded-lg"
+                >
+                  <option value="true">Victoria</option>
+                  <option value="false">Derrota</option>
+                </select>
+                <input
+                  type="number"
+                  id="megaCrowns"
+                  class="input-field w-full px-3 py-2 rounded-lg"
+                  placeholder="Coronas"
+                  min="0"
+                  max="3"
+                />
+              </div>
+            </div>
+
+            <!-- Elixir x3 -->
+            <div class="glass rounded-xl p-4">
+              <h4 class="text-white font-bold mb-3">⚡ Elixir x3</h4>
+              <div class="space-y-2">
+                <select
+                  id="elixirWin"
+                  class="select-field w-full px-3 py-2 rounded-lg"
+                >
+                  <option value="true">Victoria</option>
+                  <option value="false">Derrota</option>
+                </select>
+                <input
+                  type="number"
+                  id="elixirCrowns"
+                  class="input-field w-full px-3 py-2 rounded-lg"
+                  placeholder="Coronas"
+                  min="0"
+                  max="3"
+                />
+              </div>
+            </div>
+
+            <!-- Batalla Clásica -->
+            <div class="glass rounded-xl p-4">
+              <h4 class="text-white font-bold mb-3">⚔️ Batalla Clásica</h4>
+              <div class="space-y-2">
+                <select
+                  id="classicWin"
+                  class="select-field w-full px-3 py-2 rounded-lg"
+                >
+                  <option value="true">Victoria</option>
+                  <option value="false">Derrota</option>
+                </select>
+                <input
+                  type="number"
+                  id="classicCrowns"
+                  class="input-field w-full px-3 py-2 rounded-lg"
+                  placeholder="Coronas"
+                  min="0"
+                  max="3"
+                />
+              </div>
+            </div>
+          </div>
+
+          <div class="flex gap-3">
+            <button
+              type="submit"
+              class="btn-success flex-1 px-4 py-3 rounded-xl font-semibold"
+            >
+              Guardar Cambios
+            </button>
+            <button
+              type="button"
+              onclick="hideEditPlayerModal()"
+              class="btn-secondary flex-1 px-4 py-3 rounded-xl font-semibold"
+            >
+              Cancelar
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <script>
+      const API_BASE_URL = "http://localhost:3001/api"
+      let playersData = []
+
+      // Check authentication on page load
+      document.addEventListener("DOMContentLoaded", function () {
+        checkAuthentication()
+        loadPlayers()
+      })
+
+      function checkAuthentication() {
+        const isAuthenticated = localStorage.getItem("adminAuthenticated")
+        const loginTime = localStorage.getItem("adminLoginTime")
+
+        if (!isAuthenticated || !loginTime) {
+          window.location.href = "/admin.html"
+          return
+        }
+
+        // Check session expiry (24 hours)
+        const sessionAge = Date.now() - parseInt(loginTime)
+        const maxSessionAge = 24 * 60 * 60 * 1000
+
+        if (sessionAge > maxSessionAge) {
+          logout()
+          return
+        }
+      }
+
+      async function loadPlayers() {
+        try {
+          const response = await fetch(`${API_BASE_URL}/scores`)
+          if (!response.ok) throw new Error("Error al cargar datos")
+
+          playersData = await response.json()
+          renderAdminTable()
+        } catch (error) {
+          console.error("Error:", error)
+          showStatus("Error al cargar los datos", "error")
+        }
+      }
+
+      function renderAdminTable() {
+        const tbody = document.getElementById("admin-table-body")
+
+        if (playersData.length === 0) {
+          tbody.innerHTML = `
+                    <tr>
+                        <td colspan="10" class="text-center py-8 text-white/70">
+                            No hay jugadores registrados
+                        </td>
+                    </tr>
+                `
+          return
+        }
+
+        tbody.innerHTML = playersData
+          .map((player, index) => {
+            const position = index + 1
+            const rankBadge =
+              position <= 3
+                ? `<span class="rank-badge px-3 py-1 rounded-full text-sm">${position}</span>`
+                : `<span class="text-white font-bold text-lg">${position}</span>`
+
+            return `
+                    <tr class="table-row border-b border-white/10">
+                        <td class="px-4 py-4">${rankBadge}</td>
+                        <td class="px-4 py-4">
+                            <div class="font-semibold text-lg">${
+                              player.name
+                            }</div>
+                        </td>
+                        <td class="px-4 py-4 text-center">
+                            <div class="flex flex-col items-center gap-1">
+                                <span class="${
+                                  player.megaSelection.win
+                                    ? "win-indicator"
+                                    : "loss-indicator"
+                                }">
+                                    ${
+                                      player.megaSelection.win
+                                        ? "✅ Victoria"
+                                        : "❌ Derrota"
+                                    }
+                                </span>
+                                <span class="crown-icon text-sm">👑 ${
+                                  player.megaSelection.crowns
+                                }</span>
+                            </div>
+                        </td>
+                        <td class="px-4 py-4 text-center">
+                            <div class="flex flex-col items-center gap-1">
+                                <span class="${
+                                  player.elixirX3.win
+                                    ? "win-indicator"
+                                    : "loss-indicator"
+                                }">
+                                    ${
+                                      player.elixirX3.win
+                                        ? "✅ Victoria"
+                                        : "❌ Derrota"
+                                    }
+                                </span>
+                                <span class="crown-icon text-sm">👑 ${
+                                  player.elixirX3.crowns
+                                }</span>
+                            </div>
+                        </td>
+                        <td class="px-4 py-4 text-center">
+                            <div class="flex flex-col items-center gap-1">
+                                <span class="${
+                                  player.classicDeck.win
+                                    ? "win-indicator"
+                                    : "loss-indicator"
+                                }">
+                                    ${
+                                      player.classicDeck.win
+                                        ? "✅ Victoria"
+                                        : "❌ Derrota"
+                                    }
+                                </span>
+                                <span class="crown-icon text-sm">👑 ${
+                                  player.classicDeck.crowns
+                                }</span>
+                            </div>
+                        </td>
+                        <td class="px-4 py-4 text-center">
+                            <span class="win-indicator text-lg font-bold">${
+                              player.wins
+                            }</span>
+                        </td>
+                        <td class="px-4 py-4 text-center">
+                            <span class="loss-indicator text-lg font-bold">${
+                              player.losses
+                            }</span>
+                        </td>
+                        <td class="px-4 py-4 text-center">
+                            <span class="crown-icon text-lg font-bold">${
+                              player.totalCrowns
+                            }</span>
+                        </td>
+                        <td class="px-4 py-4 text-center">
+                            <span class="text-yellow-300 text-xl font-black">${
+                              player.points
+                            }</span>
+                        </td>
+                        <td class="px-4 py-4 text-center">
+                            <div class="flex flex-col gap-2">
+                                <button onclick="editPlayer('${
+                                  player._id
+                                }')" class="btn-accent px-3 py-1 rounded-lg text-sm font-semibold">
+                                    ✏️ Editar
+                                </button>
+                                <button onclick="deletePlayer('${
+                                  player._id
+                                }', '${
+              player.name
+            }')" class="btn-danger px-3 py-1 rounded-lg text-sm font-semibold">
+                                    🗑️ Eliminar
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                `
+          })
+          .join("")
+      }
+
+      // Modal functions
+      function showAddPlayerModal() {
+        document.getElementById("addPlayerModal").classList.remove("hidden")
+        document.getElementById("newPlayerName").focus()
+      }
+
+      function hideAddPlayerModal() {
+        document.getElementById("addPlayerModal").classList.add("hidden")
+        document.getElementById("addPlayerForm").reset()
+      }
+
+      function showEditPlayerModal() {
+        document.getElementById("editPlayerModal").classList.remove("hidden")
+      }
+
+      function hideEditPlayerModal() {
+        document.getElementById("editPlayerModal").classList.add("hidden")
+        document.getElementById("editPlayerForm").reset()
+      }
+
+      // Add player
+      document
+        .getElementById("addPlayerForm")
+        .addEventListener("submit", async function (e) {
+          e.preventDefault()
+
+          const name = document.getElementById("newPlayerName").value.trim()
+          if (!name) return
+
+          try {
+            const response = await fetch(`${API_BASE_URL}/scores`, {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ name }),
+            })
+
+            if (!response.ok) {
+              const error = await response.json()
+              throw new Error(error.error || "Error al agregar jugador")
+            }
+
+            hideAddPlayerModal()
+            await loadPlayers()
+            showStatus("Jugador agregado exitosamente", "success")
+          } catch (error) {
+            showStatus(error.message, "error")
+          }
+        })
+
+      // Edit player
+      function editPlayer(playerId) {
+        const player = playersData.find((p) => p._id === playerId)
+        if (!player) return
+
+        document.getElementById("editPlayerId").value = playerId
+        document.getElementById("editPlayerName").value = player.name
+
+        document.getElementById("megaWin").value =
+          player.megaSelection.win.toString()
+        document.getElementById("megaCrowns").value =
+          player.megaSelection.crowns
+
+        document.getElementById("elixirWin").value =
+          player.elixirX3.win.toString()
+        document.getElementById("elixirCrowns").value = player.elixirX3.crowns
+
+        document.getElementById("classicWin").value =
+          player.classicDeck.win.toString()
+        document.getElementById("classicCrowns").value =
+          player.classicDeck.crowns
+
+        showEditPlayerModal()
+      }
+
+      // Save player changes
+      document
+        .getElementById("editPlayerForm")
+        .addEventListener("submit", async function (e) {
+          e.preventDefault()
+
+          const playerId = document.getElementById("editPlayerId").value
+          const updateData = {
+            megaSelection: {
+              win: document.getElementById("megaWin").value === "true",
+              crowns:
+                parseInt(document.getElementById("megaCrowns").value) || 0,
+            },
+            elixirX3: {
+              win: document.getElementById("elixirWin").value === "true",
+              crowns:
+                parseInt(document.getElementById("elixirCrowns").value) || 0,
+            },
+            classicDeck: {
+              win: document.getElementById("classicWin").value === "true",
+              crowns:
+                parseInt(document.getElementById("classicCrowns").value) || 0,
+            },
+          }
+
+          try {
+            const response = await fetch(`${API_BASE_URL}/scores/${playerId}`, {
+              method: "PUT",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify(updateData),
+            })
+
+            if (!response.ok) {
+              const error = await response.json()
+              throw new Error(error.error || "Error al actualizar jugador")
+            }
+
+            hideEditPlayerModal()
+            await loadPlayers()
+            showStatus("Jugador actualizado exitosamente", "success")
+          } catch (error) {
+            showStatus(error.message, "error")
+          }
+        })
+
+      // Delete player
+      async function deletePlayer(playerId, playerName) {
+        if (!confirm(`¿Estás seguro de que quieres eliminar a ${playerName}?`))
+          return
+
+        try {
+          const response = await fetch(`${API_BASE_URL}/scores/${playerId}`, {
+            method: "DELETE",
+          })
+
+          if (!response.ok) {
+            const error = await response.json()
+            throw new Error(error.error || "Error al eliminar jugador")
+          }
+
+          await loadPlayers()
+          showStatus("Jugador eliminado exitosamente", "success")
+        } catch (error) {
+          showStatus(error.message, "error")
+        }
+      }
+
+      // Utility functions
+      async function refreshData() {
+        await loadPlayers()
+        showStatus("Datos actualizados", "success")
+      }
+
+      function logout() {
+        sessionStorage.removeItem("adminAuthenticated")
+        sessionStorage.removeItem("adminLoginTime")
+        window.location.href = "/admin"
+      }
+
+      function showStatus(message, type) {
+        const statusDiv = document.getElementById("statusMessage")
+        statusDiv.className = `fixed top-4 right-4 z-50 px-6 py-3 rounded-xl font-semibold ${
+          type === "success" ? "bg-green-500" : "bg-red-500"
+        } text-white`
+        statusDiv.textContent = message
+        statusDiv.classList.remove("hidden")
+
+        setTimeout(() => {
+          statusDiv.classList.add("hidden")
+        }, 3000)
+      }
+    </script>
+  </body>
+</html>
