@@ -5,200 +5,206 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Torneo Clash Royale - Clasificación</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;900&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap" rel="stylesheet">
     <style>
         :root {
-            --background: #F0F4FF;
-            --foreground: #0A74DA;
-            --card: rgba(255, 255, 255, 0.3);
-            --card-foreground: #0A74DA;
-            --primary: #0A74DA;
-            --primary-foreground: #FFFFFF;
-            --secondary: #C1D3E3;
-            --accent: #FFD700;
-            --accent-foreground: #FFFFFF;
-            --border: #C1D3E3;
-            --muted-foreground: #4B5563;
+            --background-start: #0f172a;
+            --background-end: #000000;
+            --foreground: #e2e8f0;
+            --card: #1e293b;
+            --card-foreground: #e2e8f0;
+            --primary: #3b82f6;
+            --primary-foreground: #ffffff;
+            --secondary: #334155;
+            --secondary-foreground: #e2e8f0;
+            --accent: #f59e0b;
+            --accent-foreground: #111827;
+            --border: #334155;
         }
-        
+
         body {
-            font-family: 'Open Sans', sans-serif;
-            background: linear-gradient(135deg, #0A74DA 0%, #1E40AF 50%, #3B82F6 100%);
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(170deg, var(--background-start) 0%, var(--background-end) 100%);
+            color: var(--foreground);
             min-height: 100vh;
         }
-        
+
         .title-font {
-            font-family: 'Montserrat', sans-serif;
+             font-family: 'Inter', sans-serif;
+             font-weight: 900;
+             letter-spacing: -0.05em;
         }
-        
-        .glass {
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            background: rgba(255, 255, 255, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.2);
+
+        .card {
+            background-color: var(--card);
+            border-radius: 0.75rem;
+            border: 1px solid var(--border);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
         }
-        
-        .glass-card {
-            backdrop-filter: blur(15px);
-            -webkit-backdrop-filter: blur(15px);
-            background: rgba(255, 255, 255, 0.15);
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-        }
-        
-        .btn-primary {
-            background: linear-gradient(135deg, var(--primary) 0%, #1E40AF 100%);
-            color: var(--primary-foreground);
-            transition: all 0.3s ease;
-        }
-        
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 25px rgba(10, 116, 218, 0.3);
-        }
-        
-        .btn-accent {
-            background: linear-gradient(135deg, var(--accent) 0%, #F59E0B 100%);
-            color: var(--accent-foreground);
-            transition: all 0.3s ease;
-        }
-        
-        .btn-accent:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 25px rgba(255, 215, 0, 0.3);
-        }
-        
-        .crown-icon {
-            color: var(--accent);
-            filter: drop-shadow(0 2px 4px rgba(255, 215, 0, 0.3));
-        }
-        
-        .rank-badge {
-            background: linear-gradient(135deg, var(--accent) 0%, #F59E0B 100%);
-            color: var(--accent-foreground);
-            font-weight: 900;
-            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
-        }
-        
-        .loading {
-            animation: pulse 2s infinite;
-        }
-        
-        @keyframes pulse {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.5; }
-        }
-        
-        .win-indicator {
-            color: #10B981;
-            font-weight: 600;
-        }
-        
-        .loss-indicator {
-            color: #EF4444;
-            font-weight: 600;
-        }
-        
-        .table-header {
-            background: linear-gradient(135deg, rgba(10, 116, 218, 0.8) 0%, rgba(30, 64, 175, 0.8) 100%);
-            color: white;
-            font-weight: 700;
-        }
-        
-        .table-row:hover {
-            background: rgba(255, 255, 255, 0.1);
-            transform: scale(1.01);
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 0.5rem;
+            font-weight: 500;
+            padding: 0.6rem 1.2rem;
             transition: all 0.2s ease;
+            outline: none;
+            border: 1px solid transparent;
+        }
+        .btn:focus-visible {
+            box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.4);
+        }
+        .btn.btn-primary {
+            background-color: var(--primary);
+            color: var(--primary-foreground);
+        }
+        .btn.btn-primary:hover:not(:disabled) {
+            background-color: #2563eb;
+        }
+        .btn.btn-accent {
+            background-color: var(--accent);
+            color: var(--accent-foreground);
+        }
+        .btn.btn-accent:hover:not(:disabled) {
+            background-color: #d97706;
+        }
+        .btn:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+        }
+
+        .table-container {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            text-align: left;
+            border-collapse: collapse;
+        }
+        th, td {
+            padding: 1rem 1.25rem;
+            white-space: nowrap;
+            border-bottom: 1px solid var(--border);
+        }
+        th {
+            background-color: #1e293b;
+            font-weight: 600;
+            color: #94a3b8;
+            text-transform: uppercase;
+            font-size: 0.75rem;
+            letter-spacing: 0.05em;
+        }
+        tbody tr:hover {
+            background-color: #334155;
+        }
+        
+        .skeleton-loader tr td div {
+            background-color: #334155;
+            height: 100%;
+            width: 100%;
+            border-radius: 0.25rem;
+            animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+        @keyframes pulse {
+            50% { opacity: .5; }
         }
     </style>
 </head>
 <body>
-    <div class="min-h-screen p-4">
+    <div class="min-h-screen p-4 sm:p-6 lg:p-8">
         <!-- Header -->
-        <div class="text-center mb-8">
-            <div class="glass-card rounded-2xl p-8 max-w-4xl mx-auto">
-                <h1 class="title-font text-4xl md:text-6xl font-black text-white mb-4">
+        <header class="text-center mb-8">
+            <div class="card p-6 md:p-8 max-w-4xl mx-auto">
+                <h1 class="title-font text-4xl md:text-6xl text-white mb-2">
                     🏆 TORNEO CLASH ROYALE
                 </h1>
-                <p class="text-xl text-white/90 font-semibold">
+                <p class="text-lg text-gray-300">
                     Clasificación Oficial del Torneo
                 </p>
                 <div class="flex flex-wrap justify-center gap-4 mt-6">
-                    <button onclick="refreshData()" class="btn-primary px-6 py-3 rounded-xl font-semibold flex items-center gap-2">
-                        <span>🔄</span> Actualizar
-                    </button>
-                    <button onclick="downloadCSV()" class="btn-accent px-6 py-3 rounded-xl font-semibold flex items-center gap-2">
-                        <span>📥</span> Descargar CSV
+                    <button onclick="refreshData(this)" class="btn btn-primary">
+                        <span>🔄</span>
+                        <span class="ml-2">Actualizar</span>
                     </button>
                 </div>
             </div>
-        </div>
+        </header>
 
         <!-- Leaderboard Table -->
-        <div class="max-w-7xl mx-auto">
-            <div class="glass-card rounded-2xl overflow-hidden">
-                <div class="overflow-x-auto">
-                    <table class="w-full">
-                        <thead class="table-header">
+        <main class="max-w-7xl mx-auto">
+            <div class="card overflow-hidden">
+                <div class="table-container">
+                    <table>
+                        <thead>
                             <tr>
-                                <th class="px-4 py-4 text-left">Pos</th>
-                                <th class="px-4 py-4 text-left">Jugador</th>
-                                <th class="px-4 py-4 text-center">Megaselección</th>
-                                <th class="px-4 py-4 text-center">Elixir x3</th>
-                                <th class="px-4 py-4 text-center">Batalla Clásica</th>
-                                <th class="px-4 py-4 text-center">Victorias</th>
-                                <th class="px-4 py-4 text-center">Derrotas</th>
-                                <th class="px-4 py-4 text-center">Coronas</th>
-                                <th class="px-4 py-4 text-center">Puntos</th>
+                                <th>Pos</th>
+                                <th>Jugador</th>
+                                <th class="text-center">Megaselección</th>
+                                <th class="text-center">Elixir x3</th>
+                                <th class="text-center">Batalla Clásica</th>
+                                <th class="text-center">Victorias</th>
+                                <th class="text-center">Derrotas</th>
+                                <th class="text-center">Coronas</th>
+                                <th class="text-center">Puntos</th>
                             </tr>
                         </thead>
-                        <tbody id="leaderboard-body" class="text-white">
-                            <!-- Loading state -->
-                            <tr class="loading">
-                                <td colspan="9" class="text-center py-8">
-                                    <div class="text-xl">Cargando clasificación...</div>
-                                </td>
-                            </tr>
+                        <tbody id="leaderboard-body">
+                           <!-- Skeleton Loader -->
                         </tbody>
                     </table>
                 </div>
             </div>
-        </div>
+        </main>
 
         <!-- Footer -->
-        <div class="text-center mt-8">
-            <div class="glass rounded-xl p-4 max-w-2xl mx-auto">
-                <p class="text-white/80 text-sm">
-                    Sistema de puntuación: 3 puntos por victoria + 1 punto por corona
+        <footer class="text-center mt-8">
+            <div class="max-w-2xl mx-auto text-sm text-gray-400">
+                <p>
+                    Sistema de puntuación: 3 puntos por victoria + 1 punto por corona.
                 </p>
             </div>
-        </div>
+        </footer>
     </div>
 
     <script>
         const API_BASE_URL = 'http://localhost:3001/api';
         let playersData = [];
 
-        // Load data on page load
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', () => {
             loadLeaderboard();
         });
 
         async function loadLeaderboard() {
+            const tbody = document.getElementById('leaderboard-body');
+            tbody.innerHTML = `
+                <tr class="skeleton-loader">
+                    <td colspan="9" class="p-0 border-none">
+                        <div class="space-y-2 p-3">
+                            <div class="h-8 rounded"></div>
+                            <div class="h-8 rounded"></div>
+                            <div class="h-8 rounded"></div>
+                            <div class="h-8 rounded"></div>
+                        </div>
+                    </td>
+                </tr>`;
+
             try {
                 const response = await fetch(`${API_BASE_URL}/scores`);
-                if (!response.ok) {
-                    throw new Error('Error al cargar los datos');
-                }
+                if (!response.ok) throw new Error('Error al cargar los datos');
                 
                 playersData = await response.json();
                 renderLeaderboard();
             } catch (error) {
                 console.error('Error:', error);
-                document.getElementById('leaderboard-body').innerHTML = `
+                tbody.innerHTML = `
                     <tr>
-                        <td colspan="9" class="text-center py-8 text-red-300">
-                            Error al cargar los datos. Asegúrate de que el servidor esté ejecutándose.
+                        <td colspan="9" class="text-center py-8 text-red-400">
+                            Error al cargar la clasificación. El servidor podría no estar disponible.
                         </td>
                     </tr>
                 `;
@@ -211,8 +217,8 @@
             if (playersData.length === 0) {
                 tbody.innerHTML = `
                     <tr>
-                        <td colspan="9" class="text-center py-8 text-white/70">
-                            No hay jugadores registrados
+                        <td colspan="9" class="text-center py-8 text-gray-400">
+                            Aún no hay jugadores en la clasificación.
                         </td>
                     </tr>
                 `;
@@ -221,116 +227,89 @@
 
             tbody.innerHTML = playersData.map((player, index) => {
                 const position = index + 1;
-                const rankBadge = position <= 3 ? 
-                    `<span class="rank-badge px-3 py-1 rounded-full text-sm">${position}</span>` :
-                    `<span class="text-white font-bold text-lg">${position}</span>`;
+                const rankBadge = position <= 3 
+                    ? `<span class="bg-yellow-400 text-slate-900 font-bold text-xs rounded-full h-6 w-6 flex items-center justify-center">${position}</span>` 
+                    : `<span class="text-gray-400 font-semibold">${position}</span>`;
+
+                const renderMatch = (match) => `
+                    <div class="flex flex-col items-center gap-1 text-sm">
+                        <span class="${match.win ? 'text-green-400' : 'text-red-400'} font-semibold">${match.win ? "Victoria" : "Derrota"}</span>
+                        <span class="text-gray-400">👑 ${match.crowns}</span>
+                    </div>`;
 
                 return `
-                    <tr class="table-row border-b border-white/10">
-                        <td class="px-4 py-4">${rankBadge}</td>
-                        <td class="px-4 py-4">
-                            <div class="font-semibold text-lg">${player.name}</div>
-                        </td>
-                        <td class="px-4 py-4 text-center">
-                            <div class="flex flex-col items-center gap-1">
-                                <span class="${player.megaSelection.win ? 'win-indicator' : 'loss-indicator'}">
-                                    ${player.megaSelection.win ? '✅ Victoria' : '❌ Derrota'}
-                                </span>
-                                <span class="crown-icon text-sm">👑 ${player.megaSelection.crowns}</span>
-                            </div>
-                        </td>
-                        <td class="px-4 py-4 text-center">
-                            <div class="flex flex-col items-center gap-1">
-                                <span class="${player.elixirX3.win ? 'win-indicator' : 'loss-indicator'}">
-                                    ${player.elixirX3.win ? '✅ Victoria' : '❌ Derrota'}
-                                </span>
-                                <span class="crown-icon text-sm">👑 ${player.elixirX3.crowns}</span>
-                            </div>
-                        </td>
-                        <td class="px-4 py-4 text-center">
-                            <div class="flex flex-col items-center gap-1">
-                                <span class="${player.classicDeck.win ? 'win-indicator' : 'loss-indicator'}">
-                                    ${player.classicDeck.win ? '✅ Victoria' : '❌ Derrota'}
-                                </span>
-                                <span class="crown-icon text-sm">👑 ${player.classicDeck.crowns}</span>
-                            </div>
-                        </td>
-                        <td class="px-4 py-4 text-center">
-                            <span class="win-indicator text-lg font-bold">${player.wins}</span>
-                        </td>
-                        <td class="px-4 py-4 text-center">
-                            <span class="loss-indicator text-lg font-bold">${player.losses}</span>
-                        </td>
-                        <td class="px-4 py-4 text-center">
-                            <span class="crown-icon text-lg font-bold">${player.totalCrowns}</span>
-                        </td>
-                        <td class="px-4 py-4 text-center">
-                            <span class="text-yellow-300 text-xl font-black">${player.points}</span>
-                        </td>
+                    <tr>
+                        <td class="font-semibold"><div class="flex justify-center">${rankBadge}</div></td>
+                        <td><div class="font-medium text-gray-100">${player.name}</div></td>
+                        <td class="text-center">${renderMatch(player.megaSelection)}</td>
+                        <td class="text-center">${renderMatch(player.elixirX3)}</td>
+                        <td class="text-center">${renderMatch(player.classicDeck)}</td>
+                        <td class="text-center font-bold text-green-400">${player.wins}</td>
+                        <td class="text-center font-bold text-red-400">${player.losses}</td>
+                        <td class="text-center font-semibold text-gray-300">${player.totalCrowns}</td>
+                        <td class="text-center font-bold text-blue-400 text-lg">${player.points}</td>
                     </tr>
                 `;
             }).join('');
         }
 
-        async function refreshData() {
-            const button = event.target.closest('button');
-            const originalText = button.innerHTML;
+        async function refreshData(button) {
+            const originalContent = button.innerHTML;
             button.innerHTML = '<span>🔄</span> Actualizando...';
             button.disabled = true;
             
             await loadLeaderboard();
             
             setTimeout(() => {
-                button.innerHTML = originalText;
+                button.innerHTML = originalContent;
                 button.disabled = false;
-            }, 1000);
+            }, 500);
         }
 
         function downloadCSV() {
             if (playersData.length === 0) {
-                alert('No hay datos para descargar');
+                alert('No hay datos para descargar.');
                 return;
             }
 
             const headers = [
-                'Posición',
+                'Posicion',
                 'Jugador',
-                'Megaselección (Victoria)',
-                'Megaselección (Coronas)',
-                'Elixir x3 (Victoria)',
-                'Elixir x3 (Coronas)',
-                'Batalla Clásica (Victoria)',
-                'Batalla Clásica (Coronas)',
+                'Megaseleccion_Victoria',
+                'Megaseleccion_Coronas',
+                'Elixirx3_Victoria',
+                'Elixirx3_Coronas',
+                'Clasica_Victoria',
+                'Clasica_Coronas',
                 'Victorias',
                 'Derrotas',
-                'Total Coronas',
+                'Total_Coronas',
                 'Puntos'
             ];
 
             const csvContent = [
                 headers.join(','),
-                ...playersData.map((player, index) => [
-                    index + 1,
-                    `"${player.name}"`,
-                    player.megaSelection.win ? 'Sí' : 'No',
-                    player.megaSelection.crowns,
-                    player.elixirX3.win ? 'Sí' : 'No',
-                    player.elixirX3.crowns,
-                    player.classicDeck.win ? 'Sí' : 'No',
-                    player.classicDeck.crowns,
-                    player.wins,
-                    player.losses,
-                    player.totalCrowns,
-                    player.points
+                ...playersData.map((p, i) => [
+                    i + 1,
+                    p.name,
+                    p.megaSelection.win,
+                    p.megaSelection.crowns,
+                    p.elixirX3.win,
+                    p.elixirX3.crowns,
+                    p.classicDeck.win,
+                    p.classicDeck.crowns,
+                    p.wins,
+                    p.losses,
+                    p.totalCrowns,
+                    p.points
                 ].join(','))
             ].join('\n');
 
-            const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+            const blob = new Blob(["\uFEFF" + csvContent], { type: 'text/csv;charset=utf-8;' });
             const link = document.createElement('a');
             const url = URL.createObjectURL(blob);
             link.setAttribute('href', url);
             link.setAttribute('download', `clasificacion-clash-royale-${new Date().toISOString().split('T')[0]}.csv`);
-            link.style.visibility = 'hidden';
             document.body.appendChild(link);
             link.click();
             document.body.removeChild(link);

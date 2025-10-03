@@ -14,6 +14,7 @@ const __dirname = path.dirname(__filename)
 const app = express()
 const PORT = process.env.PORT || 3001
 const MONGODB_URI = process.env.MONGODB_URI
+console.log(MONGODB_URI)
 
 let db
 
@@ -30,56 +31,9 @@ async function connectToDatabase() {
     db = client.db()
     console.log("✅ Conectado a MongoDB Atlas")
 
-    await initializeSampleData()
   } catch (error) {
     console.error("❌ Error conectando a MongoDB Atlas:", error.message)
     process.exit(1)
-  }
-}
-
-// Inicializar datos de prueba
-async function initializeSampleData() {
-  const playersCollection = db.collection("players")
-  const count = await playersCollection.countDocuments()
-
-  if (count === 0) {
-    const samplePlayers = [
-      {
-        name: "ElPekka",
-        megaSelection: { win: true, crowns: 3 },
-        elixirX3: { win: false, crowns: 1 },
-        classicDeck: { win: true, crowns: 2 },
-        points: 0,
-        wins: 0,
-        losses: 0,
-        totalCrowns: 0,
-      },
-      {
-        name: "WizardKing",
-        megaSelection: { win: true, crowns: 2 },
-        elixirX3: { win: true, crowns: 3 },
-        classicDeck: { win: false, crowns: 0 },
-        points: 0,
-        wins: 0,
-        losses: 0,
-        totalCrowns: 0,
-      },
-      {
-        name: "DragonMaster",
-        megaSelection: { win: false, crowns: 1 },
-        elixirX3: { win: true, crowns: 1 },
-        classicDeck: { win: true, crowns: 3 },
-        points: 0,
-        wins: 0,
-        losses: 0,
-        totalCrowns: 0,
-      },
-    ]
-
-    samplePlayers.forEach((player) => calculatePlayerStats(player))
-
-    await playersCollection.insertMany(samplePlayers)
-    console.log("📦 Datos de prueba inicializados")
   }
 }
 
