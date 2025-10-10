@@ -39,8 +39,8 @@ async function connectToDatabase() {
 
 // Calcular estadísticas de un jugador
 function calculatePlayerStats(player) {
-  let wins = 0
-  let losses = 0
+  let totalWins = 0
+  let totalLosses = 0
   let totalCrowns = 0
   let points = 0
 
@@ -48,19 +48,20 @@ function calculatePlayerStats(player) {
 
   gameModes.forEach((mode) => {
     if (player[mode]) {
-      totalCrowns += player[mode].crowns || 0
-      if (player[mode].win) {
-        wins++
-        points += 3
-      } else {
-        losses++
-      }
-      points += player[mode].crowns || 0
+      const wins = player[mode].wins || 0;
+      const losses = player[mode].losses || 0;
+      const crowns = player[mode].crowns || 0;
+      
+      totalWins += wins;
+      totalLosses += losses;
+      totalCrowns += crowns;
+      
+      points += (wins * 3) + crowns;
     }
   })
 
-  player.wins = wins
-  player.losses = losses
+  player.wins = totalWins
+  player.losses = totalLosses
   player.totalCrowns = totalCrowns
   player.points = points
   return player
@@ -74,8 +75,11 @@ app.get("/api/scores", async (req, res) => {
     const players = await db
       .collection("players")
       .find({})
-      .sort({ points: -1, totalCrowns: -1, wins: -1 })
       .toArray()
+
+      players.forEach(player => calculatePlayerStats(player));
+
+      players.sort((a, b) => b.points - a.points || b.totalCrowns - a.totalCrowns || b.wins - a.wins);
 
     res.json(players)
   } catch (error) {
@@ -98,14 +102,12 @@ app.post("/api/scores", async (req, res) => {
 
     const newPlayer = {
       name: name.trim(),
-      megaSelection: { win: false, crowns: 0 },
-      elixirX3: { win: false, crowns: 0 },
-      classicDeck: { win: false, crowns: 0 },
-      points: 0,
-      wins: 0,
-      losses: 0,
-      totalCrowns: 0,
+      megaSelection: { wins: 0, losses: 0, crowns: 0 },
+      elixirX3: { wins: 0, losses: 0, crowns: 0 },
+      classicDeck: { wins: 0, losses: 0, crowns: 0 },
     }
+    
+    calculatePlayerStats(newPlayer)
 
     const result = await db.collection("players").insertOne(newPlayer)
     newPlayer._id = result.insertedId
@@ -128,7 +130,26 @@ app.put("/api/scores/:id", async (req, res) => {
     if (!currentPlayer)
       return res.status(404).json({ error: "Player not found" })
 
-    const updatedPlayer = { ...currentPlayer, ...req.body }
+    const { megaSelection, elixirX3, classicDeck } = req.body
+
+    const updatedPlayer = { ...currentPlayer };
+
+    if (megaSelection) {
+      updatedPlayer.megaSelection.wins += megaSelection.win ? 1 : 0;
+      updatedPlayer.megaSelection.losses += megaSelection.win ? 0 : 1;
+      updatedPlayer.megaSelection.crowns += megaSelection.crowns;
+    }
+    if (elixirX3) {
+      updatedPlayer.elixirX3.wins += elixirX3.win ? 1 : 0;
+      updatedPlayer.elixirX3.losses += elixirX3.win ? 0 : 1;
+      updatedPlayer.elixirX3.crowns += elixirX3.crowns;
+    }
+    if (classicDeck) {
+      updatedPlayer.classicDeck.wins += classicDeck.win ? 1 : 0;
+      updatedPlayer.classicDeck.losses += classicDeck.win ? 0 : 1;
+      updatedPlayer.classicDeck.crowns += classicDeck.crowns;
+    }
+
     calculatePlayerStats(updatedPlayer)
     delete updatedPlayer._id
 
@@ -140,7 +161,8 @@ app.put("/api/scores/:id", async (req, res) => {
       .collection("players")
       .findOne({ _id: new ObjectId(id) })
     res.json(player)
-  } catch {
+  } catch (error) {
+    console.log(error)
     res.status(500).json({ error: "Failed to update player" })
   }
 })
