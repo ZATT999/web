@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Torneo Clash Royale - Clasificación</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Tabla Pública - Torneo Clash Royale</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
             --background-start: #0f172a;
@@ -23,64 +23,21 @@
             --accent-foreground: #111827;
             --border: #334155;
         }
-
         body {
             font-family: 'Inter', sans-serif;
             background: linear-gradient(170deg, var(--background-start) 0%, var(--background-end) 100%);
             color: var(--foreground);
             min-height: 100vh;
         }
-
-        .title-font {
-             font-family: 'Inter', sans-serif;
-             font-weight: 900;
-             letter-spacing: -0.05em;
-        }
-
         .card {
             background-color: var(--card);
             border-radius: 0.75rem;
             border: 1px solid var(--border);
             box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
         }
-
-        .btn {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 0.5rem;
-            font-weight: 500;
-            padding: 0.6rem 1.2rem;
-            transition: all 0.2s ease;
-            outline: none;
-            border: 1px solid transparent;
-        }
-        .btn:focus-visible {
-            box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.4);
-        }
-        .btn.btn-primary {
-            background-color: var(--primary);
-            color: var(--primary-foreground);
-        }
-        .btn.btn-primary:hover:not(:disabled) {
-            background-color: #2563eb;
-        }
-        .btn.btn-accent {
-            background-color: var(--accent);
-            color: var(--accent-foreground);
-        }
-        .btn.btn-accent:hover:not(:disabled) {
-            background-color: #d97706;
-        }
-        .btn:disabled {
-            opacity: 0.7;
-            cursor: not-allowed;
-        }
-
         .table-container {
             overflow-x: auto;
         }
-
         table {
             width: 100%;
             text-align: left;
@@ -102,7 +59,6 @@
         tbody tr:hover {
             background-color: #334155;
         }
-        
         .skeleton-loader tr td div {
             background-color: #334155;
             height: 100%;
@@ -116,204 +72,105 @@
     </style>
 </head>
 <body>
-    <div class="min-h-screen p-4 sm:p-6 lg:p-8">
-        <!-- Header -->
-        <header class="text-center mb-8">
-            <div class="card p-6 md:p-8 max-w-4xl mx-auto">
-                <h1 class="title-font text-4xl md:text-6xl text-white mb-2">
-                    🏆 TORNEO CLASH ROYALE
-                </h1>
-                <p class="text-lg text-gray-300">
-                    Clasificación Oficial del Torneo
-                </p>
-                <div class="flex flex-wrap justify-center gap-4 mt-6">
-                    <button onclick="refreshData(this)" class="btn btn-primary">
-                        <span>🔄</span>
-                        <span class="ml-2">Actualizar</span>
-                    </button>
-                </div>
+<div class="p-4 sm:p-6 lg:p-8">
+    <header class="mb-8">
+        <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
+            <div>
+                <h1 class="text-2xl sm:text-3xl font-bold text-gray-100">📊 Tabla Pública</h1>
+                <p class="text-gray-400 mt-1">Torneo Clash Royale</p>
             </div>
-        </header>
+        </div>
+    </header>
 
-        <!-- Leaderboard Table -->
-        <main class="max-w-7xl mx-auto">
-            <div class="card overflow-hidden">
-                <div class="table-container">
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Pos</th>
-                                <th>Jugador</th>
-                                <th class="text-center">Megaselección</th>
-                                <th class="text-center">Elixir x3</th>
-                                <th class="text-center">Batalla Clásica</th>
-                                <th class="text-center">Victorias</th>
-                                <th class="text-center">Derrotas</th>
-                                <th class="text-center">Coronas</th>
-                                <th class="text-center">Puntos</th>
-                            </tr>
-                        </thead>
-                        <tbody id="leaderboard-body">
-                           <!-- Skeleton Loader -->
-                        </tbody>
-                    </table>
-                </div>
+    <main class="max-w-7xl mx-auto">
+        <div class="card">
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Pos</th>
+                            <th>Jugador</th>
+                            <th class="text-center">Megaselección</th>
+                            <th class="text-center">Elixir x3</th>
+                            <th class="text-center">Batalla Clásica</th>
+                            <th class="text-center">Victorias</th>
+                            <th class="text-center">Derrotas</th>
+                            <th class="text-center">Coronas</th>
+                            <th class="text-center">Puntos</th>
+                        </tr>
+                    </thead>
+                    <tbody id="public-table-body">
+                        <tr class="skeleton-loader">
+                            <td colspan="9" class="p-0 border-none">
+                                <div class="space-y-2 p-3">
+                                    <div class="h-8 rounded"></div>
+                                    <div class="h-8 rounded"></div>
+                                    <div class="h-8 rounded"></div>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
-        </main>
+        </div>
+    </main>
+</div>
 
-        <!-- Footer -->
-        <footer class="text-center mt-8">
-            <div class="max-w-2xl mx-auto text-sm text-gray-400">
-                <p>
-                    Sistema de puntuación: 3 puntos por victoria + 1 punto por corona.
-                </p>
-            </div>
-        </footer>
-    </div>
+<script>
+const API_BASE_URL = "https://clashroyaletorneos.onrender.com/api";
+let playersData = [];
 
-    <script>{}
-        const API_BASE_URL = `https://clashroyaletorneos.onrender.com/api`;
-        let playersData = [];
+document.addEventListener("DOMContentLoaded", () => {
+    loadPlayers();
+});
 
-        document.addEventListener('DOMContentLoaded', () => {
-            loadLeaderboard();
-        });
+async function loadPlayers() {
+    const tbody = document.getElementById("public-table-body");
+    tbody.innerHTML = `<tr class="skeleton-loader"><td colspan="9" class="p-0 border-none">
+        <div class="space-y-2 p-3"><div class="h-8 rounded"></div><div class="h-8 rounded"></div><div class="h-8 rounded"></div></div></td></tr>`;
+    try {
+        const res = await fetch(`${API_BASE_URL}/scores`);
+        if (!res.ok) throw new Error("Error al cargar datos");
+        playersData = await res.json();
+        renderPublicTable();
+    } catch (e) {
+        console.error(e);
+        tbody.innerHTML = `<tr><td colspan="9" class="text-center py-8 text-gray-400">Error al cargar los datos.</td></tr>`;
+    }
+}
 
-        async function loadLeaderboard() {
-            const tbody = document.getElementById('leaderboard-body');
-            tbody.innerHTML = `
-                <tr class="skeleton-loader">
-                    <td colspan="9" class="p-0 border-none">
-                        <div class="space-y-2 p-3">
-                            <div class="h-8 rounded"></div>
-                            <div class="h-8 rounded"></div>
-                            <div class="h-8 rounded"></div>
-                            <div class="h-8 rounded"></div>
-                        </div>
-                    </td>
-                </tr>`;
+function renderPublicTable() {
+    const tbody = document.getElementById("public-table-body");
+    if (!playersData.length) {
+        tbody.innerHTML = `<tr><td colspan="9" class="text-center py-8 text-gray-400">No hay jugadores registrados.</td></tr>`;
+        return;
+    }
 
-            try {
-                const response = await fetch(`${API_BASE_URL}/scores`);
-                if (!response.ok) throw new Error('Error al cargar los datos');
-                
-                playersData = await response.json();
-                renderLeaderboard();
-            } catch (error) {
-                console.error('Error:', error);
-                tbody.innerHTML = `
-                    <tr>
-                        <td colspan="9" class="text-center py-8 text-red-400">
-                            Error al cargar la clasificación. El servidor podría no estar disponible.
-                        </td>
-                    </tr>
-                `;
-            }
-        }
-
-        function renderLeaderboard() {
-            const tbody = document.getElementById('leaderboard-body');
-            
-            if (playersData.length === 0) {
-                tbody.innerHTML = `
-                    <tr>
-                        <td colspan="9" class="text-center py-8 text-gray-400">
-                            Aún no hay jugadores en la clasificación.
-                        </td>
-                    </tr>
-                `;
-                return;
-            }
-
-            tbody.innerHTML = playersData.map((player, index) => {
-                const position = index + 1;
-                const rankBadge = position <= 3 
-                    ? `<span class="bg-yellow-400 text-slate-900 font-bold text-xs rounded-full h-6 w-6 flex items-center justify-center">${position}</span>` 
-                    : `<span class="text-gray-400 font-semibold">${position}</span>`;
-
-                const renderMatch = (match) => `
-                    <div class="flex flex-col items-center gap-1 text-sm">
-                        <span class="${match.win ? 'text-green-400' : 'text-red-400'} font-semibold">${match.win ? "Victoria" : "Derrota"}</span>
-                        <span class="text-gray-400">👑 ${match.crowns}</span>
-                    </div>`;
-
-                return `
-                    <tr>
-                        <td class="font-semibold"><div class="flex justify-center">${rankBadge}</div></td>
-                        <td><div class="font-medium text-gray-100">${player.name}</div></td>
-                        <td class="text-center">${renderMatch(player.megaSelection)}</td>
-                        <td class="text-center">${renderMatch(player.elixirX3)}</td>
-                        <td class="text-center">${renderMatch(player.classicDeck)}</td>
-                        <td class="text-center font-bold text-green-400">${player.wins}</td>
-                        <td class="text-center font-bold text-red-400">${player.losses}</td>
-                        <td class="text-center font-semibold text-gray-300">${player.totalCrowns}</td>
-                        <td class="text-center font-bold text-blue-400 text-lg">${player.points}</td>
-                    </tr>
-                `;
-            }).join('');
-        }
-
-        async function refreshData(button) {
-            const originalContent = button.innerHTML;
-            button.innerHTML = '<span>🔄</span> Actualizando...';
-            button.disabled = true;
-            
-            await loadLeaderboard();
-            
-            setTimeout(() => {
-                button.innerHTML = originalContent;
-                button.disabled = false;
-            }, 500);
-        }
-
-        function downloadCSV() {
-            if (playersData.length === 0) {
-                alert('No hay datos para descargar.');
-                return;
-            }
-
-            const headers = [
-                'Posicion',
-                'Jugador',
-                'Megaseleccion_Victoria',
-                'Megaseleccion_Coronas',
-                'Elixirx3_Victoria',
-                'Elixirx3_Coronas',
-                'Clasica_Victoria',
-                'Clasica_Coronas',
-                'Victorias',
-                'Derrotas',
-                'Total_Coronas',
-                'Puntos'
-            ];
-
-            const csvContent = [
-                headers.join(','),
-                ...playersData.map((p, i) => [
-                    i + 1,
-                    p.name,
-                    p.megaSelection.win,
-                    p.megaSelection.crowns,
-                    p.elixirX3.win,
-                    p.elixirX3.crowns,
-                    p.classicDeck.win,
-                    p.classicDeck.crowns,
-                    p.wins,
-                    p.losses,
-                    p.totalCrowns,
-                    p.points
-                ].join(','))
-            ].join('\n');
-
-            const blob = new Blob(["\uFEFF" + csvContent], { type: 'text/csv;charset=utf-8;' });
-            const link = document.createElement('a');
-            const url = URL.createObjectURL(blob);
-            link.setAttribute('href', url);
-            link.setAttribute('download', `clasificacion-clash-royale-${new Date().toISOString().split('T')[0]}.csv`);
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-        }
-    </script>
+    tbody.innerHTML = playersData.map((p, i) => {
+        const pos = i + 1;
+        const badge = pos <= 3
+            ? `<span class="bg-yellow-400 text-slate-900 font-bold text-xs rounded-full h-6 w-6 flex items-center justify-center">${pos}</span>`
+            : `<span class="text-gray-400 font-semibold">${pos}</span>`;
+        const match = (m) => `
+            <div class="text-xs leading-tight text-gray-300">
+                <div>✅ Victorias: ${m?.wins || 0}</div>
+                <div>❌ Derrotas: ${m?.losses || 0}</div>
+                <div>👑 Coronas: ${m?.crowns || 0}</div>
+            </div>`;
+        return `
+        <tr>
+            <td class="text-center">${badge}</td>
+            <td class="font-medium text-gray-100">${p.name}</td>
+            <td class="text-center">${match(p.megaSelection)}</td>
+            <td class="text-center">${match(p.elixirX3)}</td>
+            <td class="text-center">${match(p.classicDeck)}</td>
+            <td class="text-center font-bold text-green-400">${p.wins}</td>
+            <td class="text-center font-bold text-red-400">${p.losses}</td>
+            <td class="text-center font-semibold text-gray-300">${p.totalCrowns}</td>
+            <td class="text-center font-bold text-blue-400 text-lg">${p.points}</td>
+        </tr>`;
+    }).join("");
+}
+</script>
 </body>
 </html>

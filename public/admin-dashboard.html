@@ -51,15 +51,38 @@
             outline: none;
             border: 1px solid transparent;
         }
-        .btn:focus-visible { box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.4); }
-        .btn-primary { background-color: var(--primary); color: var(--primary-foreground); }
-        .btn-primary:hover { background-color: #2563eb; }
-        .btn-secondary { background-color: var(--secondary); color: var(--secondary-foreground); border-color: var(--border); }
-        .btn-secondary:hover { background-color: #475569; }
-        .btn-danger { background-color: var(--danger); color: white; }
-        .btn-danger:hover { background-color: #dc2626; }
-        .btn-success { background-color: var(--success); color: white; }
-        .btn-success:hover { background-color: #059669; }
+        .btn:focus-visible {
+            box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.4);
+        }
+        .btn-primary {
+            background-color: var(--primary);
+            color: var(--primary-foreground);
+        }
+        .btn-primary:hover {
+            background-color: #2563eb;
+        }
+        .btn-secondary {
+            background-color: var(--secondary);
+            color: var(--secondary-foreground);
+            border-color: var(--border);
+        }
+        .btn-secondary:hover {
+            background-color: #475569;
+        }
+        .btn-danger {
+            background-color: var(--danger);
+            color: white;
+        }
+        .btn-danger:hover {
+            background-color: #dc2626;
+        }
+        .btn-success {
+            background-color: var(--success);
+            color: white;
+        }
+        .btn-success:hover {
+            background-color: #059669;
+        }
         .input-field {
             width: 100%;
             padding: 0.75rem 1rem;
@@ -69,16 +92,60 @@
             color: var(--input-foreground);
             transition: all 0.2s ease;
         }
-        .input-field:focus { outline: none; border-color: var(--ring); box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.3); }
-        .table-container { overflow-x: auto; }
-        table { width: 100%; text-align: left; border-collapse: collapse; }
-        th, td { padding: 1rem 1.25rem; white-space: nowrap; border-bottom: 1px solid var(--border); }
-        th { background-color: #1e293b; font-weight: 600; color: #94a3b8; text-transform: uppercase; font-size: 0.75rem; letter-spacing: 0.05em; }
-        tbody tr:hover { background-color: #334155; }
-        .modal-overlay { position: fixed; inset: 0; background-color: rgba(15, 23, 42, 0.7); backdrop-filter: blur(4px); display: flex; align-items: center; justify-content: center; z-index: 50; padding: 1rem; }
-        .modal-content { position: relative; width: 100%; }
-        .skeleton-loader tr td div { background-color: #334155; height: 100%; width: 100%; border-radius: 0.25rem; animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite; }
-        @keyframes pulse { 50% { opacity: .5; } }
+        .input-field:focus {
+            outline: none;
+            border-color: var(--ring);
+            box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.3);
+        }
+        .table-container {
+            overflow-x: auto;
+        }
+        table {
+            width: 100%;
+            text-align: left;
+            border-collapse: collapse;
+        }
+        th, td {
+            padding: 1rem 1.25rem;
+            white-space: nowrap;
+            border-bottom: 1px solid var(--border);
+        }
+        th {
+            background-color: #1e293b;
+            font-weight: 600;
+            color: #94a3b8;
+            text-transform: uppercase;
+            font-size: 0.75rem;
+            letter-spacing: 0.05em;
+        }
+        tbody tr:hover {
+            background-color: #334155;
+        }
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background-color: rgba(15, 23, 42, 0.7);
+            backdrop-filter: blur(4px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 50;
+            padding: 1rem;
+        }
+        .modal-content {
+            position: relative;
+            width: 100%;
+        }
+        .skeleton-loader tr td div {
+            background-color: #334155;
+            height: 100%;
+            width: 100%;
+            border-radius: 0.25rem;
+            animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+        @keyframes pulse {
+            50% { opacity: .5; }
+        }
     </style>
 </head>
 <body>
@@ -86,13 +153,15 @@
     <header class="mb-8">
         <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
             <div>
-                <h1 class="text-2xl sm:text-3xl font-bold text-gray-100"> 🛡️ Panel de Administración </h1>
-                <p class="text-gray-400 mt-1"> Gestión del Torneo Clash Royale </p>
+                <h1 class="text-2xl sm:text-3xl font-bold text-gray-100">🛡️ Panel de Administración</h1>
+                <p class="text-gray-400 mt-1">Gestión del Torneo Clash Royale</p>
             </div>
             <div class="flex items-center gap-2">
-                <button onclick="showAddPlayerModal()" class="btn btn-primary"> <span>➕</span> <span class="ml-2 hidden sm:inline">Agregar Jugador</span> </button>
-                <button onclick="refreshData()" class="btn btn-secondary" aria-label="Actualizar datos"> <span>🔄</span> </button>
-                <button onclick="logout()" class="btn btn-secondary" aria-label="Cerrar sesión"> <span>🚪</span> </button>
+                <button onclick="showAddPlayerModal()" class="btn btn-primary">
+                    <span>➕</span> <span class="ml-2 hidden sm:inline">Agregar Jugador</span>
+                </button>
+                <button onclick="refreshData()" class="btn btn-secondary" aria-label="Actualizar datos">🔄</button>
+                <button onclick="logout()" class="btn btn-secondary" aria-label="Cerrar sesión">🚪</button>
             </div>
         </div>
     </header>
@@ -134,13 +203,13 @@
     <div id="statusMessage" class="fixed top-5 right-5 z-50 hidden"></div>
 </div>
 
-<!-- Add Player Modal -->
+<!-- Modales -->
 <div id="addPlayerModal" class="modal-overlay hidden">
     <div class="modal-content card max-w-md">
         <div class="p-6">
             <div class="flex justify-between items-center mb-4">
                 <h3 class="text-xl font-semibold text-gray-100">Agregar Nuevo Jugador</h3>
-                <button onclick="hideAddPlayerModal()" class="text-gray-500 hover:text-gray-300" aria-label="Cerrar modal"> &times; </button>
+                <button onclick="hideAddPlayerModal()" class="text-gray-500 hover:text-gray-300">&times;</button>
             </div>
             <form id="addPlayerForm">
                 <div class="mb-4">
@@ -156,13 +225,12 @@
     </div>
 </div>
 
-<!-- Edit Player Modal -->
 <div id="editPlayerModal" class="modal-overlay hidden">
     <div class="modal-content card max-w-2xl">
         <div class="p-6">
             <div class="flex justify-between items-start mb-4">
                 <h3 class="text-xl font-semibold text-gray-100">Editar Resultados</h3>
-                <button onclick="hideEditPlayerModal()" class="text-gray-500 hover:text-gray-300" aria-label="Cerrar modal"> &times; </button>
+                <button onclick="hideEditPlayerModal()" class="text-gray-500 hover:text-gray-300">&times;</button>
             </div>
             <form id="editPlayerForm">
                 <input type="hidden" id="editPlayerId" />
@@ -210,29 +278,9 @@
 const API_BASE_URL = "https://clashroyaletorneos.onrender.com/api";
 let playersData = [];
 
-/* ---------- Helpers para leer propiedades con fallbacks ---------- */
-function numOrZero(v) {
-    return (typeof v === 'number' && !isNaN(v)) ? v : 0;
-}
-function getWins(match) {
-    if (!match) return 0;
-    return numOrZero(match.wins ?? match.win ?? match.victories ?? match.victory);
-}
-function getLosses(match) {
-    if (!match) return 0;
-    return numOrZero(match.losses ?? match.loss ?? match.defeats ?? match.defeat);
-}
-function getCrowns(match) {
-    if (!match) return 0;
-    return numOrZero(match.crowns ?? match.crown ?? match.coronas ?? match.corona);
-}
-
-/* ---------- Init ---------- */
 document.addEventListener("DOMContentLoaded", () => {
     checkAuthentication();
     loadPlayers();
-    hideAddPlayerModal();
-    hideEditPlayerModal();
 });
 
 function checkAuthentication() {
@@ -240,218 +288,134 @@ function checkAuthentication() {
     if (!isAuthenticated) window.location.href = "/admin.html";
 }
 
-/* ---------- Cargar y renderizar jugadores ---------- */
 async function loadPlayers() {
     const tbody = document.getElementById("admin-table-body");
-    tbody.innerHTML = `
-        <tr class="skeleton-loader">
-            <td colspan="10" class="p-0 border-none">
-                <div class="space-y-2 p-3">
-                    <div class="h-8 rounded"></div>
-                    <div class="h-8 rounded"></div>
-                    <div class="h-8 rounded"></div>
-                </div>
-            </td>
-        </tr>`;
+    tbody.innerHTML = `<tr class="skeleton-loader"><td colspan="10" class="p-0 border-none">
+        <div class="space-y-2 p-3"><div class="h-8 rounded"></div><div class="h-8 rounded"></div><div class="h-8 rounded"></div></div></td></tr>`;
     try {
         const res = await fetch(`${API_BASE_URL}/scores`);
         if (!res.ok) throw new Error("Error al cargar datos");
         playersData = await res.json();
         renderAdminTable();
-    } catch (err) {
-        console.error(err);
-        showStatus("Error al cargar los datos.", "error");
-        tbody.innerHTML = `<tr><td colspan="10" class="text-center py-8 text-gray-400">Error al cargar los datos. Intenta de nuevo.</td></tr>`;
+    } catch (e) {
+        console.error(e);
+        tbody.innerHTML = `<tr><td colspan="10" class="text-center py-8 text-gray-400">Error al cargar los datos.</td></tr>`;
     }
 }
 
-/* ---------- Renderizar tabla (ahora calcula totales y puntos correctamente) ---------- */
 function renderAdminTable() {
     const tbody = document.getElementById("admin-table-body");
-    if (!playersData || playersData.length === 0) {
+    if (!playersData.length) {
         tbody.innerHTML = `<tr><td colspan="10" class="text-center py-8 text-gray-400">No hay jugadores registrados.</td></tr>`;
         return;
     }
 
-    tbody.innerHTML = playersData.map((player, index) => {
-        const mega = player.megaSelection || {};
-        const elixir = player.elixirX3 || {};
-        const classic = player.classicDeck || {};
-
-        const megaWins = getWins(mega);
-        const megaLosses = getLosses(mega);
-        const megaCrowns = getCrowns(mega);
-
-        const elixirWins = getWins(elixir);
-        const elixirLosses = getLosses(elixir);
-        const elixirCrowns = getCrowns(elixir);
-
-        const classicWins = getWins(classic);
-        const classicLosses = getLosses(classic);
-        const classicCrowns = getCrowns(classic);
-
-        // Totales por jugador sumando las 3 modalidades
-        const totalWins = megaWins + elixirWins + classicWins;
-        const totalLosses = megaLosses + elixirLosses + classicLosses;
-        const totalCrowns = megaCrowns + elixirCrowns + classicCrowns;
-
-        // Puntos: 3 por victoria + 1 por corona
-        const points = (totalWins * 3) + (totalCrowns * 1);
-
-        const renderMatch = (wins, losses, crowns) => `
+    tbody.innerHTML = playersData.map((p, i) => {
+        const pos = i + 1;
+        const badge = pos <= 3
+            ? `<span class="bg-yellow-400 text-slate-900 font-bold text-xs rounded-full h-6 w-6 flex items-center justify-center">${pos}</span>`
+            : `<span class="text-gray-400 font-semibold">${pos}</span>`;
+        const match = (m) => `
             <div class="text-xs leading-tight text-gray-300">
-                <div>✅ Victorias: ${wins}</div>
-                <div>❌ Derrotas: ${losses}</div>
-                <div>👑 Coronas: ${crowns}</div>
+                <div>✅ Victorias: ${m?.wins || 0}</div>
+                <div>❌ Derrotas: ${m?.losses || 0}</div>
+                <div>👑 Coronas: ${m?.crowns || 0}</div>
             </div>`;
-
-        const position = index + 1;
-        const rankBadge = position <= 3
-            ? `<span class="bg-yellow-400 text-slate-900 font-bold text-xs rounded-full h-6 w-6 flex items-center justify-center">${position}</span>`
-            : `<span class="text-gray-400 font-semibold">${position}</span>`;
-
         return `
-            <tr>
-                <td class="font-semibold text-center">${rankBadge}</td>
-                <td class="font-medium text-gray-100">${player.name}</td>
-                <td class="text-center">${renderMatch(megaWins, megaLosses, megaCrowns)}</td>
-                <td class="text-center">${renderMatch(elixirWins, elixirLosses, elixirCrowns)}</td>
-                <td class="text-center">${renderMatch(classicWins, classicLosses, classicCrowns)}</td>
-                <td class="text-center font-bold text-green-400">${totalWins}</td>
-                <td class="text-center font-bold text-red-400">${totalLosses}</td>
-                <td class="text-center font-semibold text-gray-300">${totalCrowns}</td>
-                <td class="text-center font-bold text-blue-400 text-lg">${points}</td>
-                <td class="text-center">
-                    <div class="flex justify-center gap-2">
-                        <button onclick="editPlayer('${player._id}')" class="btn btn-secondary text-xs p-2">✏️</button>
-                        <button onclick="deletePlayer('${player._id}', '${player.name}')" class="btn btn-danger text-xs p-2">🗑️</button>
-                    </div>
-                </td>
-            </tr>`;
+        <tr>
+            <td class="text-center">${badge}</td>
+            <td class="font-medium text-gray-100">${p.name}</td>
+            <td class="text-center">${match(p.megaSelection)}</td>
+            <td class="text-center">${match(p.elixirX3)}</td>
+            <td class="text-center">${match(p.classicDeck)}</td>
+            <td class="text-center font-bold text-green-400">${p.wins}</td>
+            <td class="text-center font-bold text-red-400">${p.losses}</td>
+            <td class="text-center font-semibold text-gray-300">${p.totalCrowns}</td>
+            <td class="text-center font-bold text-blue-400 text-lg">${p.points}</td>
+            <td class="text-center">
+                <div class="flex justify-center gap-2">
+                    <button onclick="editPlayer('${p._id}')" class="btn btn-secondary text-xs p-2">✏️</button>
+                    <button onclick="deletePlayer('${p._id}', '${p.name}')" class="btn btn-danger text-xs p-2">🗑️</button>
+                </div>
+            </td>
+        </tr>`;
     }).join("");
 }
 
-/* ---------- Modales ---------- */
-function showAddPlayerModal() { document.getElementById("addPlayerModal").classList.remove("hidden"); }
-function hideAddPlayerModal() { document.getElementById("addPlayerModal").classList.add("hidden"); }
-function showEditPlayerModal() { document.getElementById("editPlayerModal").classList.remove("hidden"); }
-function hideEditPlayerModal() { document.getElementById("editPlayerModal").classList.add("hidden"); }
+function showAddPlayerModal(){document.getElementById("addPlayerModal").classList.remove("hidden");}
+function hideAddPlayerModal(){document.getElementById("addPlayerModal").classList.add("hidden");}
+function showEditPlayerModal(){document.getElementById("editPlayerModal").classList.remove("hidden");}
+function hideEditPlayerModal(){document.getElementById("editPlayerModal").classList.add("hidden");}
 
-/* ---------- Añadir jugador ---------- */
-document.getElementById("addPlayerForm").addEventListener("submit", async function (e) {
+document.getElementById("addPlayerForm").addEventListener("submit", async (e)=>{
     e.preventDefault();
     const name = document.getElementById("newPlayerName").value.trim();
-    if (!name) return;
-    try {
-        const res = await fetch(`${API_BASE_URL}/scores`, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ name }),
-        });
-        if (!res.ok) throw new Error((await res.json()).error || "Error al agregar");
-        hideAddPlayerModal();
-        await loadPlayers();
-        showStatus("Jugador agregado.", "success");
-    } catch (err) {
-        showStatus(err.message || "Error al agregar.", "error");
-    }
+    if(!name) return;
+    await fetch(`${API_BASE_URL}/scores`, {
+        method:"POST",
+        headers:{"Content-Type":"application/json"},
+        body:JSON.stringify({name})
+    });
+    hideAddPlayerModal();
+    loadPlayers();
 });
 
-/* ---------- Editar (preparar modal) ---------- */
-function editPlayer(playerId) {
-    const player = playersData.find((p) => p._id === playerId);
-    if (!player) return;
-    document.getElementById("editPlayerId").value = playerId;
-    document.getElementById("editPlayerName").value = player.name;
-    // reset inputs a valores por defecto
-    document.getElementById("megaWin").value = "false";
-    document.getElementById("megaCrowns").value = "0";
-    document.getElementById("elixirWin").value = "false";
-    document.getElementById("elixirCrowns").value = "0";
-    document.getElementById("classicWin").value = "false";
-    document.getElementById("classicCrowns").value = "0";
+function editPlayer(id){
+    const p = playersData.find(x=>x._id===id);
+    if(!p)return;
+    document.getElementById("editPlayerId").value = id;
+    document.getElementById("editPlayerName").value = p.name;
     showEditPlayerModal();
 }
 
-/* ---------- Guardar cambios (acumular correctamente) ---------- */
-document.getElementById("editPlayerForm").addEventListener("submit", async function (e) {
+// ---- FORMULARIO DE EDICIÓN CORREGIDO ----
+document.getElementById("editPlayerForm").addEventListener("submit", async (e)=>{
     e.preventDefault();
-    const playerId = document.getElementById("editPlayerId").value;
-    const player = playersData.find((p) => p._id === playerId);
-    if (!player) return;
+    const id = document.getElementById("editPlayerId").value;
 
-    const megaWin = document.getElementById("megaWin").value === "true";
-    const megaCrowns = parseInt(document.getElementById("megaCrowns").value) || 0;
-    const elixirWin = document.getElementById("elixirWin").value === "true";
-    const elixirCrowns = parseInt(document.getElementById("elixirCrowns").value) || 0;
-    const classicWin = document.getElementById("classicWin").value === "true";
-    const classicCrowns = parseInt(document.getElementById("classicCrowns").value) || 0;
-
-    // Usamos propiedades numéricas "wins" y "losses" para acumular.
-    // Si el objeto actual tiene otras formas, el servidor debe normalizar; aquí hacemos acumulado seguro.
     const updateData = {
         megaSelection: {
-            wins: getWins(player.megaSelection) + (megaWin ? 1 : 0),
-            losses: getLosses(player.megaSelection) + (!megaWin ? 1 : 0),
-            crowns: getCrowns(player.megaSelection) + megaCrowns
+            win: document.getElementById("megaWin").value === "true",
+            crowns: parseInt(document.getElementById("megaCrowns").value) || 0
         },
         elixirX3: {
-            wins: getWins(player.elixirX3) + (elixirWin ? 1 : 0),
-            losses: getLosses(player.elixirX3) + (!elixirWin ? 1 : 0),
-            crowns: getCrowns(player.elixirX3) + elixirCrowns
+            win: document.getElementById("elixirWin").value === "true",
+            crowns: parseInt(document.getElementById("elixirCrowns").value) || 0
         },
         classicDeck: {
-            wins: getWins(player.classicDeck) + (classicWin ? 1 : 0),
-            losses: getLosses(player.classicDeck) + (!classicWin ? 1 : 0),
-            crowns: getCrowns(player.classicDeck) + classicCrowns
+            win: document.getElementById("classicWin").value === "true",
+            crowns: parseInt(document.getElementById("classicCrowns").value) || 0
         }
     };
 
     try {
-        const res = await fetch(`${API_BASE_URL}/scores/${playerId}`, {
-            method: "PUT",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(updateData),
+        const res = await fetch(`${API_BASE_URL}/scores/${id}`, {
+            method:"PUT",
+            headers:{"Content-Type":"application/json"},
+            body:JSON.stringify(updateData)
         });
-        if (!res.ok) throw new Error((await res.json()).error || "Error al actualizar");
+        if(!res.ok) throw new Error("Error al actualizar el jugador");
         hideEditPlayerModal();
-        await loadPlayers();
-        showStatus("Resultados actualizados correctamente.", "success");
-    } catch (err) {
-        showStatus(err.message || "Error al actualizar", "error");
+        loadPlayers();
+    } catch(err) {
+        console.error(err);
+        alert("Hubo un error al actualizar el jugador");
     }
 });
 
-/* ---------- Eliminar jugador ---------- */
-async function deletePlayer(playerId, playerName) {
-    if (!confirm(`¿Estás seguro de que quieres eliminar a ${playerName}?`)) return;
-    try {
-        const res = await fetch(`${API_BASE_URL}/scores/${playerId}`, { method: "DELETE" });
-        if (!res.ok) throw new Error((await res.json()).error || "Error al eliminar");
-        await loadPlayers();
-        showStatus("Jugador eliminado.", "success");
-    } catch (err) {
-        showStatus(err.message || "Error al eliminar", "error");
-    }
-}
-
-/* ---------- Otras utilidades ---------- */
-function logout() {
-    localStorage.removeItem("adminAuthenticated");
-    localStorage.removeItem("adminLoginTime");
-    window.location.href = "/admin.html";
-}
-function refreshData() {
-    showStatus("Actualizando datos...", "info");
+async function deletePlayer(id,name){
+    if(!confirm(`¿Seguro que deseas eliminar a ${name}?`))return;
+    await fetch(`${API_BASE_URL}/scores/${id}`,{method:"DELETE"});
     loadPlayers();
 }
-function showStatus(message, type = "info") {
-    const statusDiv = document.getElementById("statusMessage");
-    const bgColor = type === "success" ? "bg-green-500" : (type === "error" ? "bg-red-500" : "bg-blue-500");
-    statusDiv.className = `fixed top-5 right-5 px-4 py-2 rounded-md font-semibold text-white ${bgColor}`;
-    statusDiv.textContent = message;
-    statusDiv.classList.remove("hidden");
-    setTimeout(() => statusDiv.classList.add("hidden"), 3000);
+
+function logout(){
+    localStorage.removeItem("adminAuthenticated");
+    window.location.href="/admin.html";
+}
+
+function refreshData(){
+    loadPlayers();
 }
 </script>
 </body>
