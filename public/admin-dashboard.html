@@ -179,6 +179,7 @@
                             <th class="text-center">Batalla Clásica</th>
                             <th class="text-center">Victorias</th>
                             <th class="text-center">Derrotas</th>
+                            <th class="text-center">Enfrentamientos</th>
                             <th class="text-center">Coronas</th>
                             <th class="text-center">Puntos</th>
                             <th class="text-center">Acciones</th>
@@ -330,6 +331,7 @@ function renderAdminTable() {
             <td class="text-center">${match(p.classicDeck)}</td>
             <td class="text-center font-bold text-green-400">${p.wins}</td>
             <td class="text-center font-bold text-red-400">${p.losses}</td>
+            <td class="text-center font-bold text-green-300">${(p.losses + p.wins) / 3}</td>
             <td class="text-center font-semibold text-gray-300">${p.totalCrowns}</td>
             <td class="text-center font-bold text-blue-400 text-lg">${p.points}</td>
             <td class="text-center">
